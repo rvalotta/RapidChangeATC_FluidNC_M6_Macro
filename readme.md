@@ -15,8 +15,9 @@ This is a conversion of the GRBLHal Script.
 - Any tool number over your unload tool will be treated as a manual tool change
 
 You will need to define a input and output and add it to the Yaml as well
-
+```
 user_outputs:
   digital0_pin:  gpio.25:LOW ; Pin for Dust Cover
 user_inputs:
   digital0_pin:  GPIO.16:LOW ; Pin for tool setter
+```
