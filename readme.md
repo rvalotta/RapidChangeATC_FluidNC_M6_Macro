@@ -1,5 +1,7 @@
 FluidNC M6_Macro implementation for RapidChangeATC
 
+> :warning: **Usage at your own risk, was only roughly tested on my machine**
+
 REQUIREMENTS: FluidNC 3.8.4-Pre7
 - There were some bugs found that are corrected in this version.
 
