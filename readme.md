@@ -13,3 +13,10 @@ This is a conversion of the GRBLHal Script.
 - FluidNC does not pass tool 0 to the m6_macro.  As a work around, if you have X pockets, X=1 will be used to unload the tool. (ie 8 Pocket ATC, tool nine will unload the tool )
 - The spindle being used with the toolchanger will need to be your first tool
 - Any tool number over your unload tool will be treated as a manual tool change
+
+You will need to define a input and output and add it to the Yaml as well
+
+user_outputs:
+  digital0_pin:  gpio.25:LOW ; Pin for Dust Cover
+user_inputs:
+  digital0_pin:  GPIO.16:LOW ; Pin for tool setter
