@@ -93,7 +93,7 @@
 #<_rc_cover_mode> = 2
 (debug,Dust Cover Mode: #<_rc_cover_mode>)
 
-; The axis for axis mode: 3 = A Axis, 1 = B Axis, 2 = C Axis
+; The axis for axis mode: 3 = A Axis, 4 = B Axis, 5 = C Axis
 #<_rc_cover_axis> = 0
 (debug,Dust Cover Axis: #<_rc_cover_axis>)
 
