@@ -268,7 +268,7 @@ o50 else
 
 	; ************* BEGIN MEASURE **************
 
-	o600 if [#<_rc_measure> EQ 1 && #<_rc_current_tool> NE [#<_rc_pockets> - 1]]
+	o600 if [#<_rc_measure> EQ 1 && #<_rc_current_tool> NE [#<_rc_pockets> + 1]]
 		; Tool measure is enabled and we have a tool.
 		; Is this the first measurement we are taking
 
