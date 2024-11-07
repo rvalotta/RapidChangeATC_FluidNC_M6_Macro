@@ -285,7 +285,7 @@ o50 else
 		(debug, Probe Z down seek mode)
 		G0 G91 Z[#<_rc_retract_dist>]
 		(debug, Retract from tool setter)
-		G38.2 G91 Z[#<_rc_set_distance> * -1]
+		G38.2 G91 Z[#<_rc_set_distance> * -1] F[#<_rc_set_feed>]
 		(debug, Probe Z down set mode)
 		G53 G0 G90 Z[#<_rc_safe_z>]
 		(debug, Triggered Work Z: #5063)
