@@ -19,9 +19,8 @@
 
 ; ************ BEGIN VALIDATION ************
 o50 if [#1001 NE 1]
-	(debug, RapidChange settings are not initialized.)
-	(debug, Abort operation and initialize RapidChange settings.)
-	(debug, Program has been paused with M0.)
+	(print, RapidChange settings are not initialized.)
+	(print, Abort operation and initialize RapidChange settings.)
 	$Alarm/Send=3
 o50 elseif [#<_selected_tool> LT 0]
 	(debug, Selected Tool: #<_selected_tool> is out of range. Tool change aborted. Program paused.)
@@ -106,7 +105,7 @@ o50 else
 	o300 elseif [#<_rc_current_tool> GT [#<_rc_pockets> + 1]]
 		; Tool out of magazine range. Unload manually
 		G53 G0 X[#<_rc_manual_x>] Y[#<_rc_manual_y>]
-		(debug, Tool #<_rc_current_tool> is out of magazine range. Manually remove tool #<_rc_current_tool> and cycle start to continue.)
+		(print, Tool #<_rc_current_tool> is out of magazine range. Manually remove tool #<_rc_current_tool> and cycle start to continue.)
 		M0
 		(debug, Unloaded tool out of range)
 	o300 else
@@ -150,7 +149,7 @@ o50 else
 					(debug, Go to safe clearance)
 					G53 G0 X[#<_rc_manual_x>] Y[#<_rc_manual_y>]
 					(debug, Go to manual position)
-					(debug, Tool #<_rc_current_tool> failed to unload. Please manually unload tool #<_rc_current_tool> and cycle start to continue.)
+					(print, Tool #<_rc_current_tool> failed to unload. Please manually unload tool #<_rc_current_tool> and cycle start to continue.)
 					M0
 				o330 else
 					G53 G0 Z[#<_rc_to_load_z>]
@@ -166,7 +165,7 @@ o50 else
 			(debug, Stop spindle)
 			G53 G0 Z[#<_rc_to_load_z>]
 			(debug, Go to move to load)
-			(debug, Confirm tool #<_rc_current_tool> is unloaded and press cycle start to continue.)
+			(print, Confirm tool #<_rc_current_tool> is unloaded and press cycle start to continue.)
 			M0
 		o310 endif
 	o300 endif
@@ -221,7 +220,7 @@ o50 else
 				G53 G0 Z[#<_rc_safe_z>]
 				(debug, Moved to safe clearance)
 				G53 G0 X[#<_rc_manual_x>] Y[#<_rc_manual_y>]
-				(debug, Tool #<_selected_tool> failed to load zone 1. Manually load tool #<_selected_tool> and cycle start to continue.)
+				(print, Tool #<_selected_tool> failed to load zone 1. Manually load tool #<_selected_tool> and cycle start to continue.)
 				M0
 				(debug, Manually loaded tool after failure)
 			o430 else
@@ -235,7 +234,7 @@ o50 else
 					G53 G0 Z[#<_rc_safe_z>]
 					(debug, Moved to safe clearance)
 					G53 G0 X[#<_rc_manual_x>] Y[#<_rc_manual_y>]
-					(debug, Tool #<_selected_tool> failed to load Zone 2. Manually load tool #<_selected_tool> and cycle start to continue.)
+					(print, Tool #<_selected_tool> failed to load Zone 2. Manually load tool #<_selected_tool> and cycle start to continue.)
 					M0
 					(debug, Manually loaded tool after failure)
 				o440 else
@@ -247,13 +246,14 @@ o50 else
 			(debug, Tool recognition disabled)
 			G53 G0 Z[#<_rc_to_measure_z>]
 			(debug, Move to measure z)
-			(debug, Confirm tool #<_selected_tool> is loaded and press cycle start to continue.)
+			(print, Confirm tool #<_selected_tool> is loaded and press cycle start to continue.)
 			M0
 		o420 endif
 	o400 else
 		; Tool out of magazine range. Load manually
+		G53 G0 Z[#<_rc_safe_z]
 		G53 G0 X[#<_rc_manual_x>] Y[#<_rc_manual_y>]
-		(debug, Tool #<_selected_tool> is out of magazine range. Manually load tool #<_selected_tool> and cycle start to continue.)
+		(print, Tool #<_selected_tool> is out of magazine range. Manually load tool #<_selected_tool> and cycle start to continue.)
 		M0
 		(debug, Loaded tool out of range)
 	o400 endif
