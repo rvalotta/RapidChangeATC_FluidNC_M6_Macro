@@ -2,8 +2,9 @@
 
 > :warning: **Usage at your own risk, was only roughly tested on my machine**
 
-REQUIREMENTS: FluidNC 3.9.2 (This will be the version that has the needed fixes to properly support this code)
+REQUIREMENTS: FluidNC 3.9.3 (This will be the version that has the needed fixes to properly support this code)
 - There were some bugs found that are corrected in this version.
+- Now uses the implemented _current_tool instead of our own _rc_current_tool
 
 This is a conversion of the GRBLHal Script.  
 
