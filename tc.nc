@@ -25,7 +25,7 @@ o50 if [#1001 NE 1]
 o50 elseif [#<_selected_tool> LT 0]
 	(debug, Selected Tool: #<_selected_tool> is out of range. Tool change aborted. Program paused.)
 	$Alarm/Send=3
-o50 elseif [#<_selected_tool> EQ #<_rc_current_tool>]
+o50 elseif [#<_selected_tool> EQ #<_current_tool>]
 	(debug, Current tool selected. Tool change bypassed.)
 o50 else
 	(debug, Tool change validated)
@@ -56,7 +56,7 @@ o50 else
 		#<_rc_y_load> = #<_rc_pocket_one_y>
 		(debug, Load Y set to #<_rc_y_load>)
 
-		#<_rc_x_unload> = [[[#<_rc_current_tool> - 1] * #<_rc_pocket_offset> * #<_rc_direction>] + #<_rc_pocket_one_x>]
+		#<_rc_x_unload> = [[[#<_current_tool> - 1] * #<_rc_pocket_offset> * #<_rc_direction>] + #<_rc_pocket_one_x>]
 		(debug, Unload X set to #<_rc_x_unload>)
 		#<_rc_y_unload> = #<_rc_pocket_one_y>
 		(debug, Unload Y set to #<_rc_y_unload>)
@@ -69,7 +69,7 @@ o50 else
 
 		#<_rc_x_unload> = #<_rc_pocket_one_x>
 		(debug, Unload X set to #<_rc_x_unload>)
-		#<_rc_y_unload> = [[[#<_rc_current_tool> - 1] * #<_rc_pocket_offset> * #<_rc_direction>] + #<_rc_pocket_one_y>]
+		#<_rc_y_unload> = [[[#<_current_tool> - 1] * #<_rc_pocket_offset> * #<_rc_direction>] + #<_rc_pocket_one_y>]
 		(debug, Unload Y set to #<_rc_y_unload>)
 		(debug, Pocket locations set for Y alignment)
 	o210 endif
@@ -89,7 +89,7 @@ o50 else
 	  o510 endif
 	o500 elseif [#<_rc_cover_mode> EQ 2]
 	  ; Output Mode: Turn on the output and dwell
-	  G4 P0.25
+	  G4 P0.05
 	  M64 P[#<_rc_cover_output>]
 	  G4 P[#<_rc_cover_dwell>]
 	o500 endif
@@ -99,19 +99,19 @@ o50 else
 	; Unload current tool
 
 
-	o300 if [#<_rc_current_tool> EQ [#<_rc_pockets> + 1] OR #<_rc_current_tool> EQ 0 ]
+	o300 if [#<_current_tool> EQ 0 ]
 		; We have tool 0. Do nothing as we are already unloaded.
 		(debug, Unloaded tool 0)
-	o300 elseif [#<_rc_current_tool> GT [#<_rc_pockets> + 1]]
+	o300 elseif [#<_current_tool> GT [#<_rc_pockets>]]
 		; Tool out of magazine range. Unload manually
 		G53 G0 X[#<_rc_manual_x>] Y[#<_rc_manual_y>]
-		(print, Tool #<_rc_current_tool> is out of magazine range. Manually remove tool #<_rc_current_tool> and cycle start to continue.)
+		(print, Tool #<_current_tool> is out of magazine range. Manually remove tool #<_current_tool> and cycle start to continue.)
 		M0
 		(debug, Unloaded tool out of range)
 	o300 else
 		; We have a tool with a pocket
 		G53 G0 X[#<_rc_x_unload>] Y[#<_rc_y_unload>]
-		(debug, Move to pocket #<_rc_current_tool>)
+		(debug, Move to pocket #<_current_tool>)
 		G53 G0 Z[#<_rc_engage_z> + #<_rc_z_spin_off>]
 		(debug, Move to spin start)
 		M4 S[#<_rc_unload_rpm>]
@@ -125,7 +125,7 @@ o50 else
 		o310 if [#<_rc_recognize> EQ 1]
 			G53 G0 Z[#<_rc_zone_one_z>]
 			(debug, Move to zone 1)
-			G4 P0.25
+			G4 P0.05
 			M66 P[#<_rc_rec_input>] L0
 			(debug, Read input: #5399)
 
@@ -140,7 +140,7 @@ o50 else
 				M5
 				G53 G0 Z[#<_rc_zone_one_z>]
 				(debug, Move to zone 1)
-				G4 P0.25
+				G4 P0.05
 				M66 P[#<_rc_rec_input>] L0
 				(debug, Input read again: #5399)
 				o330 if [#5399 EQ 0]
@@ -149,7 +149,7 @@ o50 else
 					(debug, Go to safe clearance)
 					G53 G0 X[#<_rc_manual_x>] Y[#<_rc_manual_y>]
 					(debug, Go to manual position)
-					(print, Tool #<_rc_current_tool> failed to unload. Please manually unload tool #<_rc_current_tool> and cycle start to continue.)
+					(print, Tool #<_current_tool> failed to unload. Please manually unload tool #<_current_tool> and cycle start to continue.)
 					M0
 				o330 else
 					G53 G0 Z[#<_rc_to_load_z>]
@@ -165,22 +165,22 @@ o50 else
 			(debug, Stop spindle)
 			G53 G0 Z[#<_rc_to_load_z>]
 			(debug, Go to move to load)
-			(print, Confirm tool #<_rc_current_tool> is unloaded and press cycle start to continue.)
+			(print, Confirm tool #<_current_tool> is unloaded and press cycle start to continue.)
 			M0
 		o310 endif
 	o300 endif
 	; *************** END UNLOAD ***************
 
 	; *************** BEGIN LOAD ***************
-	o400 if [#<_selected_tool> EQ [#<_rc_pockets> + 1] OR [#<_selected_tool> EQ 0]]
-		; We selected tool 98, symbol for tool 0.
+	o400 if [[#<_selected_tool> EQ 0]]
+		; We selected tool tool 0.
 		; Go to safe z.
 		G53 G0 Z[#<_rc_safe_z>]
 		(debug, Moved to safe clearance)
         ; reset TLO to 0
         G43.1 Z0
         (debug, G43.1 Z offset removed)
-        #<_rc_current_tool> = 0
+        M61 Q0
         #<_rc_tool1_offset> = 0
         #<_rc_tool1_offset_referenced> = 0
 	o400 elseif [#<_selected_tool> LE #<_rc_pockets>]
@@ -211,7 +211,7 @@ o50 else
 			(debug, Tool Recognition Enabled)
 			G53 G0 Z[#<_rc_zone_one_z>]
 			(debug, Move to zone 1)
-			G4 P0.25
+			G4 P0.05
 			M66 P[#<_rc_rec_input>] L0
 			(debug, Read input: #5399)
 
@@ -227,7 +227,7 @@ o50 else
 				(debug, Passed Zone 1)
 				G53 G0 Z[#<_rc_zone_two_z>]
 				(debug, Move to zone 2)
-				G4 P0.25
+				G4 P0.05
 				M66 P[#<_rc_rec_input>] L0
 				(debug, Read input: #5399)
 				o440 if [#5399 EQ 0]
@@ -259,16 +259,14 @@ o50 else
 	o400 endif
 
 	; Update the current tool.
-	; M61 Q[#<_selected_tool>]
-	; update _rc_current_tool to be _selected tool
-	#<_rc_current_tool> = #<_selected_tool>
-	G4 P0.25
-	(debug, Loaded tool #<_rc_current_tool>)
+    M61 Q[#<_selected_tool>]
+	G4 P0.05
+	(debug, Loaded tool #<_current_tool>)
 	; *************** END LOAD *****************
 
 	; ************* BEGIN MEASURE **************
 
-	o600 if [#<_rc_measure> EQ 1 AND #<_rc_current_tool> NE [#<_rc_pockets> + 1] AND #<_rc_current_tool> NE 0]
+	o600 if [#<_rc_measure> EQ 1 AND #<_current_tool> NE 0]
 		; Tool measure is enabled and we have a tool.
 		; Is this the first measurement we are taking
 
@@ -277,7 +275,7 @@ o50 else
 		G53 G0 X[#<_rc_measure_x>] Y[#<_rc_measure_y>]
 		(debug, Move to tool setter XY)
 		G53 G0 Z[#<_rc_measure_start_z>]
-		G4 P0.25
+		G4 P0.05
 		(debug, 1: #5422 2: #<_rc_measure-start_z>)
 
 		(debug, Down to Z seek start)
@@ -299,7 +297,7 @@ o50 else
 			(debug, 5063: #5063)
 			(debug, tool1 offset #<_rc_tool1_offset>)
 			(debug, Triggered Mach Z: #<_rc_trigger_mach_z>)
-			G4 P0.25
+			G4 P0.05
 			G43.1 Z[#<_rc_trigger_mach_z>]
 			(debug, Ref Mach Pos: 0, Work Z after G43.1: #<_z>)
 		o620 endif
@@ -324,7 +322,7 @@ o50 else
 		o560 endif
 	o550 elseif [#<_rc_cover_mode> EQ 2]
 		; Output Mode: Turn on the output and dwell
-		G4 P0.25
+		G4 P0.05
 		M65 P[#<_rc_cover_output>]
 		G4 P[#<_rc_cover_dwell>]
 		(debug, Dwell for cover)

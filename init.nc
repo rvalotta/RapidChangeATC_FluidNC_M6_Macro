@@ -187,7 +187,6 @@ o100 endif
 (debug,Flag Set: #1001)
 (debug,RapidChange ATC Configuration Loaded)
 ; ******** END CALCULATED SETTINGS ***********
-#<_rc_current_tool> = 0
 (debug, Current tool #<_current_tool> Selected Tool #<_selected_tool> 5400 #5400)
 #<_rc_tool1_offset_referenced> = 0
 #<_rc_tool1_offset> = 0
