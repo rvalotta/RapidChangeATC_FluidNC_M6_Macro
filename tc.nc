@@ -18,6 +18,15 @@
 ;
 
 ; ************ BEGIN VALIDATION ************
+
+; Record current units
+o25 if [#<_metric> EQ 0]
+	#<_rc_return_units> = 20
+o25 else
+	#<_rc_return_units> = 21
+o25 endif
+(debug, Units recorded)
+
 o50 if [#1001 NE 1]
 	(print, RapidChange settings are not initialized.)
 	(print, Abort operation and initialize RapidChange settings.)
@@ -36,14 +45,6 @@ o50 else
 	M5
 	M9
 	(debug, Spindle and coolant turned off)
-
-	; Record current units
-	o200 if [#<_metric> EQ 0]
-		#<_rc_return_units> = 20
-	o200 else
-		#<_rc_return_units> = 21
-	o200 endif
-	(debug, Units recorded)
 
 	; Activate configured units and absolute distance mode
 	G[#<_rc_units>] G90
