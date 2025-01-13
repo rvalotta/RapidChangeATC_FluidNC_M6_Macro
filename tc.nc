@@ -251,7 +251,7 @@ o50 else
 		o420 endif
 	o400 else
 		; Tool out of magazine range. Load manually
-		G53 G0 Z[#<_rc_safe_z]
+		G53 G0 Z[#<_rc_safe_z>]
 		G53 G0 X[#<_rc_manual_x>] Y[#<_rc_manual_y>]
 		(print, Tool #<_selected_tool> is out of magazine range. Manually load tool #<_selected_tool> and cycle start to continue.)
 		M0
