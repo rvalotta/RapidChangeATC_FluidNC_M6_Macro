@@ -129,7 +129,7 @@ o50 else
 			M66 P[#<_rc_rec_input>] L0
 			(debug, Read input: #5399)
 
-			o320 if [#5399 EQ 0]
+			o320 if [#5399 EQ 1]
 				(debug, Input read timed out)
 				G53 G0 Z[#<_rc_engage_z> + #<_rc_z_spin_off>]
 				(debug, Go to spindle start)
@@ -143,7 +143,7 @@ o50 else
 				G4 P0.05
 				M66 P[#<_rc_rec_input>] L0
 				(debug, Input read again: #5399)
-				o330 if [#5399 EQ 0]
+				o330 if [#5399 EQ 1]
 					(debug, Input read timed out again)
 					G53 G0 Z[#<_rc_safe_z>]
 					(debug, Go to safe clearance)
@@ -215,7 +215,7 @@ o50 else
 			M66 P[#<_rc_rec_input>] L0
 			(debug, Read input: #5399)
 
-			o430 if [#5399 EQ 1]
+			o430 if [#5399 EQ 0]
 				(debug, Failed Zone 1)
 				G53 G0 Z[#<_rc_safe_z>]
 				(debug, Moved to safe clearance)
@@ -230,7 +230,7 @@ o50 else
 				G4 P0.05
 				M66 P[#<_rc_rec_input>] L0
 				(debug, Read input: #5399)
-				o440 if [#5399 EQ 0]
+				o440 if [#5399 EQ 1]
 					G53 G0 Z[#<_rc_safe_z>]
 					(debug, Moved to safe clearance)
 					G53 G0 X[#<_rc_manual_x>] Y[#<_rc_manual_y>]
