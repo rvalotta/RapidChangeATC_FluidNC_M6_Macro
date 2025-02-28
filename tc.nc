@@ -90,7 +90,7 @@ o50 else
 	o500 elseif [#<_rc_cover_mode> EQ 2]
 	  ; Output Mode: Turn on the output and dwell
 	  G4 P0.05
-	  M64 P[#<_rc_cover_output>]
+	  M65 P[#<_rc_cover_output>]
 	  G4 P[#<_rc_cover_dwell>]
 	o500 endif
 	; *************** END SETUP ****************
@@ -323,7 +323,7 @@ o50 else
 	o550 elseif [#<_rc_cover_mode> EQ 2]
 		; Output Mode: Turn on the output and dwell
 		G4 P0.05
-		M65 P[#<_rc_cover_output>]
+		M64 P[#<_rc_cover_output>]
 		G4 P[#<_rc_cover_dwell>]
 		(debug, Dwell for cover)
 	o550 endif
